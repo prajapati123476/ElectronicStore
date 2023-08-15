@@ -1,6 +1,7 @@
 package com.lcwd.electronics.store.controllers;
 
 import com.lcwd.electronics.store.dtos.ApiResponseMessage;
+import com.lcwd.electronics.store.dtos.PageableResponse;
 import com.lcwd.electronics.store.dtos.UserDto;
 import com.lcwd.electronics.store.services.UserService;
 import jakarta.validation.Valid;
@@ -50,11 +51,11 @@ public class UserController {
 
     //get all
     @GetMapping
-    public ResponseEntity<List<UserDto>> getAllUser(
+    public ResponseEntity<PageableResponse<UserDto>> getAllUser(
             @RequestParam(value = "pageNumber", defaultValue = "0", required = false) int pageNumber,
             @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
             @RequestParam(value = "sortBy", defaultValue = "name", required = false) String sortBy,
-            @RequestParam(value = "sortDir", defaultValue = "acs", required = false) String sortDir
+            @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir
 
             ) {
         return new ResponseEntity<>(userService.getAllUser(pageNumber, pageSize, sortBy, sortDir), HttpStatus.OK);
