@@ -24,7 +24,7 @@ public class FileServiceImpl implements FileService {
         String filename = UUID.randomUUID().toString();
         String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
         String fileNameWithExtension = filename+extension;
-        String fullPathWithFileName = path + File.separator+fileNameWithExtension;
+        String fullPathWithFileName = path + fileNameWithExtension;
 
         if (extension.equalsIgnoreCase(".png") || extension.equalsIgnoreCase(".jpg")
                 || extension.equalsIgnoreCase(".jpeg")) {
