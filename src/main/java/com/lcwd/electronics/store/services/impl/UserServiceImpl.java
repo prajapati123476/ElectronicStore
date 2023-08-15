@@ -2,6 +2,7 @@ package com.lcwd.electronics.store.services.impl;
 
 import com.lcwd.electronics.store.dtos.UserDto;
 import com.lcwd.electronics.store.entities.User;
+import com.lcwd.electronics.store.exceptions.ResourceNotFoundException;
 import com.lcwd.electronics.store.repositories.UserRepository;
 import com.lcwd.electronics.store.services.UserService;
 import org.modelmapper.ModelMapper;
@@ -38,7 +39,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto updateUser(UserDto userDto, String userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("user not found"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("user not found"));
         user.setName(userDto.getName());
         user.setAbout(userDto.getAbout());
         user.setGender(userDto.getGender());
@@ -52,7 +53,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(String userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("user not found"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("user not found"));
         userRepository.delete(user);
     }
 
@@ -67,13 +68,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserById(String userId) {
-        User user = userRepository.findById(userId).orElseThrow(()-> new RuntimeException("not found"));
+        User user = userRepository.findById(userId).orElseThrow(()-> new ResourceNotFoundException("not found by given this user id"));
         return entityToDto(user);
     }
 
     @Override
     public UserDto getUserByEmail(String email) {
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Not found"));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("Not found by this given mail id"));
         return entityToDto(user);
     }
 
