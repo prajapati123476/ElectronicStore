@@ -1,9 +1,6 @@
 package com.lcwd.electronics.store.dtos;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 @Getter
@@ -18,6 +15,7 @@ public class UserDto {
     @Size(min = 3, max = 40, message = "invalid name")
     private String name;
     @Email(message = "invalid user email!!")
+    @Pattern(regexp = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$", message = "invalid email ")
     @NotBlank
     private String email;
     @NotBlank(message = "password is required")
