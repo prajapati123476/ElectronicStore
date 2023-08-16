@@ -56,7 +56,7 @@ public class CategoryController {
     }
 
     //get single
-    @GetMapping("/categoryId")
+    @GetMapping("/{categoryId}")
     public ResponseEntity<CategoryDto> getSingle(@PathVariable String categoryId) {
         CategoryDto categoryDto = categoryService.get(categoryId);
         return ResponseEntity.ok(categoryDto);
