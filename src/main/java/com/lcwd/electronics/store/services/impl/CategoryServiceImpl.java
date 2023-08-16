@@ -2,7 +2,9 @@ package com.lcwd.electronics.store.services.impl;
 
 import com.lcwd.electronics.store.dtos.CategoryDto;
 import com.lcwd.electronics.store.dtos.PageableResponse;
+import com.lcwd.electronics.store.dtos.UserDto;
 import com.lcwd.electronics.store.entities.Category;
+import com.lcwd.electronics.store.entities.User;
 import com.lcwd.electronics.store.exceptions.ResourceNotFoundException;
 import com.lcwd.electronics.store.helper.Helper;
 import com.lcwd.electronics.store.repositories.CategoryRepository;
@@ -15,7 +17,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -72,5 +76,33 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDto get(String categoryId) {
         Category category = categoryRepository.findById(categoryId).orElseThrow( () -> new ResourceNotFoundException("not found"));
         return mapper.map(category, CategoryDto.class);
+    }
+
+    @Override
+    public List<CategoryDto> searchCategory(String keyword) {
+        List<Category> categoriesList = categoryRepository.findByTitleContaining(keyword);
+        System.out.println(keyword);
+
+        System.out.println(categoriesList.get(0).getDescription());
+
+
+//       List<CategoryDto> categoryDtoList = categoriesList.stream().map(category -> mapper.map(categoriesList, CategoryDto.class)).collect(Collectors.toList());
+        List<CategoryDto> dtoList = categoriesList.stream().map(user -> entityToDto(user)).collect(Collectors.toList());
+
+
+        System.out.println(dtoList.get(0).getDescription());
+
+        return dtoList;
+    }
+
+
+    private CategoryDto entityToDto(Category saveUser) {
+
+        return mapper.map(saveUser, CategoryDto.class);
+    }
+
+    private Category dtoToEntity(CategoryDto categoryDto) {
+
+        return mapper.map(categoryDto, Category.class);
     }
 }

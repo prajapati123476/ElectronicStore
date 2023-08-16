@@ -2,6 +2,9 @@ package com.lcwd.electronics.store.services;
 
 import com.lcwd.electronics.store.dtos.CategoryDto;
 import com.lcwd.electronics.store.dtos.PageableResponse;
+import com.lcwd.electronics.store.dtos.UserDto;
+
+import java.util.List;
 
 public interface CategoryService {
 
@@ -22,5 +25,7 @@ public interface CategoryService {
     CategoryDto get(String categoryId);
 
     //search
+
+    List<CategoryDto> searchCategory(String keyword);
 
 }

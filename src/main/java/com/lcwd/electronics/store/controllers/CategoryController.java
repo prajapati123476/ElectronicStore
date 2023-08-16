@@ -3,12 +3,15 @@ package com.lcwd.electronics.store.controllers;
 import com.lcwd.electronics.store.dtos.ApiResponseMessage;
 import com.lcwd.electronics.store.dtos.CategoryDto;
 import com.lcwd.electronics.store.dtos.PageableResponse;
+import com.lcwd.electronics.store.dtos.UserDto;
 import com.lcwd.electronics.store.services.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/categories")
@@ -61,4 +64,12 @@ public class CategoryController {
         CategoryDto categoryDto = categoryService.get(categoryId);
         return ResponseEntity.ok(categoryDto);
     }
+
+    //search
+    @GetMapping("/search/{keywords}")
+    public ResponseEntity<List<CategoryDto>> searchCategory(@PathVariable String keywords) {
+        return new ResponseEntity<>(categoryService.searchCategory(keywords), HttpStatus.OK);
+    }
+
+
 }
