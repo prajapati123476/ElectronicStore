@@ -56,7 +56,10 @@ public class CategoryController {
     public ResponseEntity<ApiResponseMessage> deleteCategory(
             @PathVariable String categoryId) {
         categoryService.delete(categoryId);
-        ApiResponseMessage responseMessage = ApiResponseMessage.builder().message("Category deleted successfully").success(true).build();
+        ApiResponseMessage responseMessage = ApiResponseMessage.builder().message("Category deleted successfully")
+                .success(true)
+                .status(HttpStatus.OK)
+                .build();
         return new ResponseEntity<>(responseMessage, HttpStatus.OK);
     }
 

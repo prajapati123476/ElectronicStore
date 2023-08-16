@@ -2,21 +2,27 @@ package com.lcwd.electronics.store.services.impl;
 
 import com.lcwd.electronics.store.dtos.CategoryDto;
 import com.lcwd.electronics.store.dtos.PageableResponse;
-import com.lcwd.electronics.store.dtos.UserDto;
 import com.lcwd.electronics.store.entities.Category;
-import com.lcwd.electronics.store.entities.User;
 import com.lcwd.electronics.store.exceptions.ResourceNotFoundException;
 import com.lcwd.electronics.store.helper.Helper;
 import com.lcwd.electronics.store.repositories.CategoryRepository;
 import com.lcwd.electronics.store.services.CategoryService;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -28,6 +34,12 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryRepository categoryRepository;
     @Autowired
     private ModelMapper mapper;
+
+    @Value("${category.profile.image.path}")
+    private String imagePath;
+
+    private final Logger logger = LoggerFactory.getLogger(CategoryService.class);
+
     @Override
     public CategoryDto create(CategoryDto categoryDto) {
         //creating category id randomly
@@ -58,6 +70,20 @@ public class CategoryServiceImpl implements CategoryService {
     public void delete(String categoryId) {
         //get category of given id
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("not found id"));
+
+//delete image
+
+        String fullPath = imagePath + category.getCoverImage();
+        try {
+            Path path = Paths.get(fullPath);
+            Files.delete(path);
+        } catch (NoSuchFileException e) {
+            logger.info("user image not found");
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         categoryRepository.delete(category);
 
     }
@@ -86,7 +112,7 @@ public class CategoryServiceImpl implements CategoryService {
         System.out.println(categoriesList.get(0).getDescription());
 
 
-//       List<CategoryDto> categoryDtoList = categoriesList.stream().map(category -> mapper.map(categoriesList, CategoryDto.class)).collect(Collectors.toList());
+        //List<CategoryDto> categoryDtoList = categoriesList.stream().map(category -> mapper.map(categoriesList, CategoryDto.class)).collect(Collectors.toList());
         List<CategoryDto> dtoList = categoriesList.stream().map(user -> entityToDto(user)).collect(Collectors.toList());
 
 
