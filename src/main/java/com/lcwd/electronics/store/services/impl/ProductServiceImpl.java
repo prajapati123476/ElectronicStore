@@ -14,10 +14,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Date;
+import java.util.UUID;
 
+
+@Service
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
@@ -29,6 +32,11 @@ public class ProductServiceImpl implements ProductService {
     public ProductDto create(ProductDto productDto) {
 
         Product product = mapper.map(productDto, Product.class);
+        //product id
+        String productId = UUID.randomUUID().toString();
+        product.setProductId(productId);
+        //added date
+        product.setAddedDate(new Date());
         Product savedProduct = productRepository.save(product);
         return mapper.map(savedProduct, ProductDto.class);
     }
