@@ -6,16 +6,25 @@ import com.lcwd.electronics.store.entities.Product;
 import com.lcwd.electronics.store.exceptions.ResourceNotFoundException;
 import com.lcwd.electronics.store.helper.Helper;
 import com.lcwd.electronics.store.repositories.ProductRepository;
+import com.lcwd.electronics.store.services.CategoryService;
 import com.lcwd.electronics.store.services.ProductService;
 import org.apache.catalina.mapper.Mapper;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.UUID;
 
@@ -28,6 +37,15 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     ModelMapper mapper;
+
+
+
+    @Value("${product.profile.image.path}")
+    private String imagePath;
+
+    private final Logger logger = LoggerFactory.getLogger(ProductService.class);
+
+
     @Override
     public ProductDto create(ProductDto productDto) {
 
@@ -53,6 +71,7 @@ public class ProductServiceImpl implements ProductService {
         product.setDiscountedPrice(productDto.getDiscountedPrice());
         product.setAddedDate(productDto.getAddedDate());
         product.setStock(productDto.isStock());
+        product.setProductImage(productDto.getProductImage());
         Product updatedProduct = productRepository.save(product);
 
         return mapper.map(updatedProduct, ProductDto.class);
@@ -60,7 +79,21 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void delete(String productId) {
+        //get category of given id
         Product product = productRepository.findById(productId).orElseThrow( () -> new ResourceNotFoundException("Not found"));
+
+        //delete image
+        String fullPath = imagePath + product.getProductImage();
+        try {
+            Path path = Paths.get(fullPath);
+            Files.delete(path);
+        }catch (NoSuchFileException e) {
+            logger.info("user image not found");
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         productRepository.delete(product);
     }
 
