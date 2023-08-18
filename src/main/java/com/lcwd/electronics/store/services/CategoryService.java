@@ -3,6 +3,7 @@ package com.lcwd.electronics.store.services;
 import com.lcwd.electronics.store.dtos.CategoryDto;
 import com.lcwd.electronics.store.dtos.PageableResponse;
 import com.lcwd.electronics.store.dtos.UserDto;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
