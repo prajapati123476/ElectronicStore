@@ -1,11 +1,7 @@
 package com.lcwd.electronics.store.dtos;
 
-import com.lcwd.electronics.store.entities.OrderItem;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @Getter
 @Setter
