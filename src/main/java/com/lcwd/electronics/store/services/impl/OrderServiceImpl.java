@@ -80,11 +80,12 @@ public class OrderServiceImpl implements OrderService {
                     .order(order)
                     .build();
 
+            orderAmount.set(orderAmount.get() + orderItem.getTotalPrice());
             return orderItem;
         }).collect(Collectors.toList());
 
         order.setOrderItems(orderItems);
-//        order.getOrderAmount(orderAmount.get());
+        order.setOrderAmount(orderAmount.get());
 
         cart.getItems().clear();
         cartRepository.save(cart);
