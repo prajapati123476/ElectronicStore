@@ -5,6 +5,7 @@ import com.lcwd.electronics.store.dtos.CreateOrderRequest;
 import com.lcwd.electronics.store.dtos.OrderDto;
 import com.lcwd.electronics.store.dtos.PageableResponse;
 import com.lcwd.electronics.store.services.OrderService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class OrderController {
 
     //crate
     @PostMapping
-    public ResponseEntity<OrderDto> createOrder(@RequestBody CreateOrderRequest request) {
+    public ResponseEntity<OrderDto> createOrder(@Valid @RequestBody CreateOrderRequest request) {
         OrderDto order = orderService.createOrder(request);
         return new ResponseEntity<>(order, HttpStatus.CREATED);
     }
