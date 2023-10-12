@@ -53,6 +53,7 @@ public class OrderController {
             @RequestParam(value = "sortBy", defaultValue = "billingName", required = false) String sortBy,
             @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir) {
         PageableResponse<OrderDto> orders = orderService.getOrders(pageNumber, pageSize, sortBy, sortDir);
+        System.out.println(orders);
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
