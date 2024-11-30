@@ -1,6 +1,5 @@
 package com.lcwd.electronics.store.dtos;
 
-import com.lcwd.electronics.store.validate.ImageNameValid;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
@@ -25,7 +24,4 @@ public class UserDto {
     private String gender;
     @NotBlank(message = "write something about yourself")
     private String about;
-    //cutom validator annotation
-    @ImageNameValid
-    private String imageName;
 }
